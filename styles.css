@@ -1,4 +1,47 @@
 /* https://yaomon.itch.io/playing-cards card face artist 
 https://cazwolf.itch.io/pixel-fantasy-cards card back artist */
 
+.game-screen{
+    width: 100%;
+    height: 900px;
+    border: 1px solid #333;
+    margin: 0 auto;
+    position: relative;
+    /*Objects disappear when they leave gamescreen*/
+    overflow: hidden;
+    background: linear-gradient(#000000,90%,#808080)
+    
+}
+
+.card{
+    content: url(./resources/card-back.png);
+    position: absolute;
+    width: 250px;
+    height: 320px;
+    transform: translateY(50%);
+    /*Rounded corner card*/
+    border-radius: 10.5%;
+    transform-style: preserve-3d;
+    transition: all 0.5s ease ;
+}
+
+.back-card{
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    backface-visibility: hidden;
+
+}
+
+.front-card{
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    backface-visibility: hidden;
+
+}
+
+.deck{
+
+}
 

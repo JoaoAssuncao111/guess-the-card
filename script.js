@@ -25,6 +25,9 @@ function shuffle(deck){
 }
 
 function pickACard(deck){
+    //TODO add previous mainCard to history
+    mainCard = deck.pop
+    //TODO set main card image to actual card
     
 }
 
@@ -40,3 +43,6 @@ function isRed(card){
 function isHeart(card){
     const suit = card.split(" ")[1]
 }
+
+function numberGuess(){}
+function figureGuess(){}

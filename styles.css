@@ -32,8 +32,16 @@ https://cazwolf.itch.io/pixel-fantasy-cards card back artist */
     transition: all 0.5s ease;
 }
 
-.button{
-    
+.button1{
+    padding: 40px 60px;
+    outline: none;
+    border: none;
+    cursor:pointer;
+    border-right: 1px solid;
+    font-size: large;
+}
+.button2{
+    visibility: hidden;
     padding: 40px 60px;
     outline: none;
     border: none;
@@ -59,6 +67,20 @@ https://cazwolf.itch.io/pixel-fantasy-cards card back artist */
     background-color: green;
   }
 
+  .drawCard{
+    visibility: hidden;
+    padding: 20px 30px;
+    outline: none;
+    border: none;
+    cursor:pointer;
+    border-right: 1px solid;
+    font-size: large;
+    left: 44%;
+    top: 65%;
+    position: absolute;
+    
+}
+  
 .back-card{
     position: absolute;
     width: 100%;
@@ -85,6 +107,7 @@ https://cazwolf.itch.io/pixel-fantasy-cards card back artist */
     width: 220px;
     height: 320px;
     border-radius: 10.5%;
+    box-shadow: 10px 10px;
 
 }
 

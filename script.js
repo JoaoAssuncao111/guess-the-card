@@ -8,27 +8,30 @@ let mainCardValue = ""
 
 let leftButton = document.getElementById('btn1')
 let rightButton = document.getElementById('btn2')
+let card = document.getElementById('card')
 let drawNextCardButton = document.getElementById("drawButton")
 let deckLength = document.getElementById("deckLength")
 let buttonGroup = document.getElementById("buttonGroup")
 
+let redGuessListener = () =>{isRed() ? guessedRed() : endRound()}
+let blackGuessListener = ()=>{isRed()?  endRound(): guessedBlack()}
 
-let redGuessListener = () =>{isRed ? guessedRed(): endRound()}
-let blackGuessListener = ()=>{isRed? endRound : guessedBlack()}
+let currentLeftLstnr = redGuessListener
+let currentRightLstnr = blackGuessListener
 
 //You can only ever guess from suits that belong to the same color 
-let isSpadesListener = ()=> {isSpades() ? guessedBlackSuit() : endRound()}
+let isSpadesListener = ()=>{isSpades() ? guessedBlackSuit() : endRound()}
 let isClubsListener = ()=>{isSpades() ? endRound(): guessedBlackSuit()}
-let isHeartsListener = function isHeartsGuess(){isHearts() ?  guessedRedSuit() : endRound()}
-let isDiamondsListener = function isDiamondsGuess(){!isHeartsGuess()}
-let isNumberListener = function isNumberGuess(){isNumber() ? guessedNumber() : endRound()}
-let isFigureListener = function isFigureGuess(){isNumber() ? endRound : guessedFigure()}
+let isHeartsListener = ()=>{isHearts() ?  guessedRedSuit() : endRound()}
+let isDiamondsListener = ()=> {isHearts()? endRound() : guessedRedSuit()}
+let isNumberListener = ()=>{isNumber() ? guessedNumber() : endRound()}
+let isFigureListener = ()=>{isNumber() ? endRound() : guessedFigure()}
+let isFiveOrLowerListener = ()=>{parseInt(mainCardValue) > 5 ? endRound(): guessedLower()}
+let isGreaterThanFiveListener = ()=>{parseInt(mainCardValue) <= 5 ? guessedGreater() : endRound()}
 
-
-leftButton.addEventListener('click',redGuessListener)
+leftButton.addEventListener('click',redGuessListener,false)
 rightButton.addEventListener('click',blackGuessListener,false)
 startGame() 
-console.log(mainCard)
 
 drawNextCardButton.addEventListener('click',() => {drawNextCard()})
 
@@ -54,34 +57,34 @@ function shuffle(deck){
 function draw(deck){
     if(deck.length == 0) deckFinished()
     mainCard = deck.pop()
+    console.log(mainCard)
     mainCardSuit = mainCard.split(" ")[2]
     mainCardValue = mainCard.split(" ")[0]
     deckLength.innerHTML = `Your deck has ${deck.length} cards left.`
+    card.classList.add("drawAnimation")
+    
 }
 
 function drawNextCard(){
     
+    leftButton.disabled = false
+    rightButton.disabled = false
     resetButtonListeners()
-    leftButton.addEventListener('click', redGuessListener)
-    rightButton.addEventListener('click',blackGuessListener)
+    draw(deck)
+    card.style.transform = "none"
 }
 
 function resetButtonListeners(){
     drawNextCardButton.style.visibility = 'hidden'
-    leftButton.textContent = "Red"
-    rightButton.textContent = "Black"
-    
-    leftButton.replaceWith(leftButton.cloneNode(true));
-    rightButton.replaceWith(rightButton.cloneNode(true));
-    
+    guessedSomething(currentLeftLstnr,currentRightLstnr,"Red","Black",redGuessListener,blackGuessListener)
+    currentLeftLstnr = redGuessListener
+    currentRightLstnr = blackGuessListener    
 }
 
 function startGame(){
-    
     fillDeck()
     shuffle(deck)
     draw(deck)
-    deckLength.innerHTML = `Your deck has ${deck.length} cards left.`
     
 }
 
@@ -98,68 +101,42 @@ function restartGame(){
 function endRound(){
     //draw(deck)
     //add previous card to history and show result (win or loss)
+    card.classList.remove("drawAnimation")
     drawNextCardButton.style.visibility ="visible"
+    card.style.transform = "rotateY(180deg)"
+    leftButton.disabled = true
+    rightButton.disabled = true
+
+
 }
 
-function deckFinished(){
-    //End game, thanks for playing
+function deckFinished(){//End game, thanks for playing
 }
 
-function isNumber(){
-    return(mainCardValue.length <= 2)
+function isNumber(){ return(mainCardValue.length <= 2)}
+
+function isRed(){return(mainCardSuit == 'Hearts' || mainCardSuit == 'Diamonds')} 
+//Every time a guess is made the listeners and button text need to be updated
+function guessedSomething(removeLeftLstnr,removeRightLstnr,leftText,rightText,addLeftLstnr,addRightLstnr){
+    leftButton.removeEventListener('click',removeLeftLstnr,false)
+    rightButton.removeEventListener('click',removeRightLstnr,false)
+    leftButton.textContent = leftText
+    rightButton.textContent = rightText
+    leftButton.addEventListener('click',addLeftLstnr,false)
+    rightButton.addEventListener('click',addRightLstnr,false)
+    currentLeftLstnr = addLeftLstnr
+    currentRightLstnr = addRightLstnr
 }
 
-function isRed(){
-    return(mainCardSuit == 'Hearts' || mainCardSuit == 'Diamonds')
-} 
+function guessedBlack(){guessedSomething(redGuessListener,blackGuessListener,"Spades","Clubs",isSpadesListener,isClubsListener)}
 
+function guessedRed(){guessedSomething(redGuessListener,blackGuessListener,"Hearts","Diamonds",isHeartsListener,isDiamondsListener)}
 
-function guessedBlack(){
-    leftButton.removeEventListener('click',redGuessListener,false)
-    rightButton.removeEventListener('click',blackGuessListener,false)
-    leftButton.textContent = "Spades"
-    rightButton.textContent = "Clubs"
-    leftButton.addEventListener('click',isSpadesListener)
-    rightButton.addEventListener('click',isClubsListener)
-}
+function guessedRedSuit(){guessedSomething(isHeartsListener,isDiamondsListener,"Number","Figures",isNumberListener,isFigureListener)}
 
-function guessedRed(){
-    leftButton.removeEventListener('click',redGuessListener,false)
-    rightButton.removeEventListener('click',blackGuessListener,false)
-    leftButton.textContent = "Hearts"
-    rightButton.textContent = "Diamonds"
-    leftButton.addEventListener('click',isHeartsListener)
-    rightButton.addEventListener('click',isDiamondsListener)
-}
+function guessedBlackSuit(){guessedSomething(isSpadesListener,isClubsListener,"Number","Figure",isNumberListener,isFigureListener)}
 
-
-function guessedRedSuit(){
-    leftButton.removeEventListener('click',()=>{isHeartsOrSpadesListener()},false)
-    rightButton.removeEventListener('click',()=>{isDiamondsOrClubsListener()},false)
-    leftButton.textContent = "Number"
-    rightButton.textContent = "Figure"
-    leftButton.addEventListener('click',()=>{isNumberListener()},false)
-    rightButton.addEventListener('click',()=>{isFigureListener()},false)
-}
-function guessedBlackSuit(){
-    leftButton.removeEventListener('click',()=>{isHeartsOrSpadesListener()},false)
-    rightButton.removeEventListener('click',()=>{isDiamondsOrClubsListener()},false)
-    leftButton.textContent = "Number"
-    rightButton.textContent = "Figure"
-    leftButton.addEventListener('click',()=>{isNumberListener()},false)
-    rightButton.addEventListener('click',()=>{isFigureListener()},false)
-}
-
-
-
-function guessedNumber(){
-    leftButton.removeEventListener('click',()=>{isNumberListener()},false)
-    rightButton.removeEventListener('click',()=>{isFigureListener()},false)
-    leftButton.textContent = "<=5"
-    rightButton.textContent = ">5"
-    leftButton.addEventListener('click', ()=> {isFiveOrLowerListener()},false)
-    rightButton.addEventListener('click',()=>{isGreaterThanFiveListener()},false)
-}
+function guessedNumber(){guessedSomething(isNumberListener,isFigureListener,"<= 5","> 5",isFiveOrLowerListener,isGreaterThanFiveListener)}
 
 function guessedFigure(){
     leftButton.removeEventListener('click',()=>{isNumberListener()},false)
@@ -168,19 +145,6 @@ function guessedFigure(){
 
 }
 
-function isFiveOrLowerListener(){
-    if(parseInt(mainCardValue) > 5){
-        endRound()
-    }
-    else guessedLower()
-}
-
-function isGreaterThanFiveListener(){
-    if(parseInt(mainCardValue) <= 5){
-        endRound()
-}
-    else guessedGreater()
-}
 function guessedLower(){
     leftButton.removeEventListener('click',()=>{isFiveOrLowerListener()},false)
     rightButton.removeEventListener('click',()=>{isGreaterThanFiveListener()},false)
@@ -191,19 +155,6 @@ function guessedGreater(){
     rightButton.removeEventListener('click',()=>{isGreaterThanFiveListener()},false)
     //
 }
+function isHearts(){return(mainCardSuit == 'Hearts')}
 
-function guessesSomething(removeLeftLstnr,removeRightLstnr,leftText,rightText,addLeftLstnr,addRightLstnr){
-    leftButton.removeEventListener('click',removeLeftLstnr,false)
-    rightButton.removeEventListener('click',removeRightLstnr,false)
-    leftButton.textContent = leftText
-    rightButton.textContent = rightText
-    leftButton.addEventListener('click',addLeftLstnr,false)
-    rightButton.addEventListener('click',addRightLstnr,false)
-}
-function isHearts(){
-    return(mainCardSuit == 'Hearts')
-}
-
-function isSpades(){
-    return(mainCardSuit == 'Spades')
-}
+function isSpades(){return(mainCardSuit == 'Spades')}

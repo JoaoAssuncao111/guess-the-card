@@ -32,16 +32,7 @@ https://cazwolf.itch.io/pixel-fantasy-cards card back artist */
     transition: all 0.5s ease;
 }
 
-.button1{
-    padding: 40px 60px;
-    outline: none;
-    border: none;
-    cursor:pointer;
-    border-right: 1px solid;
-    font-size: large;
-}
-.button2{
-    visibility: hidden;
+.button{
     padding: 40px 60px;
     outline: none;
     border: none;

@@ -35,8 +35,6 @@ startGame()
 
 drawNextCardButton.addEventListener('click',() => {drawNextCard()})
 
-
-
 function fillDeck(){
     for(let suit of suits){
         for(let value of values){
@@ -62,16 +60,14 @@ function draw(deck){
     mainCardValue = mainCard.split(" ")[0]
     deckLength.innerHTML = `Your deck has ${deck.length} cards left.`
     card.classList.add("drawAnimation")
-    
 }
 
 function drawNextCard(){
-    
+    card.style.transform = "none"
     leftButton.disabled = false
     rightButton.disabled = false
     resetButtonListeners()
     draw(deck)
-    card.style.transform = "none"
 }
 
 function resetButtonListeners(){
@@ -85,7 +81,6 @@ function startGame(){
     fillDeck()
     shuffle(deck)
     draw(deck)
-    
 }
 
 function restartGame(){
@@ -93,14 +88,14 @@ function restartGame(){
      mainCard = ""
      mainCardSuit = ""
      mainCardValue = ""
-     
-   
     startGame()
 }
 
 function endRound(){
-    //draw(deck)
     //add previous card to history and show result (win or loss)
+
+    let frontCard = document.getElementById("frontCard")
+    frontCard.style.content =`url(resources/${mainCardSuit}/${mainCardValue}.png)`
     card.classList.remove("drawAnimation")
     drawNextCardButton.style.visibility ="visible"
     card.style.transform = "rotateY(180deg)"
@@ -148,13 +143,15 @@ function guessedFigure(){
 function guessedLower(){
     leftButton.removeEventListener('click',()=>{isFiveOrLowerListener()},false)
     rightButton.removeEventListener('click',()=>{isGreaterThanFiveListener()},false)
-    //
+    //transformFourButtons
 }
 function guessedGreater(){
     leftButton.removeEventListener('click',()=>{isFiveOrLowerListener()},false)
     rightButton.removeEventListener('click',()=>{isGreaterThanFiveListener()},false)
-    //
+    //transformFiveButtons
 }
 function isHearts(){return(mainCardSuit == 'Hearts')}
 
 function isSpades(){return(mainCardSuit == 'Spades')}
+
+

@@ -6,6 +6,13 @@ let mainCard = ""
 let mainCardSuit = ""
 let mainCardValue = ""
 let score = 0
+let scoreElem = document.getElementById("score")
+let tutorialButton = document.getElementById("tutorialButton")
+let popup = document.getElementById("popup")
+tutorialButton.addEventListener('click',()=>{popup.classList.add("openPopup")})
+let closeTutorialButton = document.getElementById("closeTutorialButton")
+closeTutorialButton.addEventListener('click',()=>{popup.classList.remove("openPopup")})
+
 
 let leftButton = document.getElementById('btn1')
 let rightButton = document.getElementById('btn2')
@@ -169,7 +176,7 @@ function guessedFigure(){
 }
 
 function guessedLast(){
-    //score++
+    scoreElem.innerHTML = "Score: " + ++score
     correctAudio.play()
     endRound()
 

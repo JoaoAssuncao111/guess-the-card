@@ -12,8 +12,28 @@
 </head>
 <body class="body">
     <div class="game-screen">
+        <div class ="historyContainer">
+            <div class="history">
+                
+            </div>
+        </div>
+        <div id="score">Score: 0</div>
+        <button class="tutorialButton" id ="tutorialButton">Tutorial</button>
+            <div class="popup"id="popup">
+                <h2>TUTORIAL</h2>
+                <p>The goal of the game is to guess the card through sheer luck.</p>
+                <p> Step 1: Guess the Suit's color</p>
+                <p> Step 2: Guess the Card's Suit</p>
+                <p> Step 3: Guess if it's a Number or a Figure</p>
+                <p> Step 3.5: (Numbers only) Guess if it's lower or equal to 5, or greater than 5</p>
+                <p> Step 4: Guess the exact Figure or Number</p>
+                <p> If you miss any guess you'll start over on a new card and you gain 1 Point by completing Steps 1 to 4</p>
+                <p> When a new card is drawn, the previous one is added to the History</p>
+                <p> You can hover the deck to see how many cards there are left</p>
+                <p> Good Luck!</p>
+                <button id="closeTutorialButton">Got it</button>
+            </div>
         <audio id="audio" src="resources/correct.mp3"></audio>
-        <div>Score: </div>
         <div class="deck"></div>
         <div class="cardsLeft" id="deckLength">Your deck has x cards left</div>
         <div class = "card" id="card">

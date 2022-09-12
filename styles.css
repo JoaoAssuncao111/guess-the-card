@@ -8,13 +8,23 @@ https://cazwolf.itch.io/pixel-fantasy-cards card back artist */
 .game-screen{
     width: 100%;
     height: 100%;
-    border: 1px solid #333;
     margin: 0 auto;
     position: relative;
 
     overflow: hidden;
     background: linear-gradient(to top,#000000,90%,#8b0000)
     
+}
+
+.historyContainer{
+    position: absolute;
+    width: 20%;
+    height: 70%;
+    left: 70%;
+    bottom: 25%;
+    background-color:darkred;
+    border-radius: 40px;
+    text-align: center;
 }
 
 .card{
@@ -43,17 +53,35 @@ https://cazwolf.itch.io/pixel-fantasy-cards card back artist */
 .button:last-child{
     border-right: none;
 }
-.btn-group button {
+
+.btn-group{
+    display: flex;
+    flex-direction: row;
+    align-content: center;
+    justify-content: center;
+    align-items: center;
+}
+.btn-group button{
     position:relative;
     display: inline-flex;
-    left: 39%;
     margin-top: auto;
+    margin: 3px;
     border: none;
+    text-align: center;
     border-radius: 10px;
     overflow: hidden;
   }
 
-  .btn-group button:hover {
+.btn-group-4{
+    left:35%;
+    
+}
+.btn-group-5{
+    left: 32%;
+    right: 0%;
+}
+
+.btn-group button:hover {
     background-color: red;
   }
 
@@ -87,10 +115,7 @@ https://cazwolf.itch.io/pixel-fantasy-cards card back artist */
     height: 100%;
     backface-visibility: hidden;
     transform:rotateY(180deg);
-
 }
-
-
 
 .deck{
     position: absolute;

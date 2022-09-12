@@ -1,11 +1,11 @@
 let suits = ['Hearts', 'Diamonds','Clubs','Spades']
 let values = [2,3,4,5,6,7,8,9,10,'Jack','Queen','King','Ace']
-
 let deck = [] 
 let mainCard = ""
 let mainCardSuit = ""
 let mainCardValue = ""
 let score = 0
+
 let scoreElem = document.getElementById("score")
 let tutorialButton = document.getElementById("tutorialButton")
 let popup = document.getElementById("popup")
@@ -21,6 +21,7 @@ let drawNextCardButton = document.getElementById("drawButton")
 let deckLength = document.getElementById("deckLength")
 let buttonGroup = document.getElementById("buttonGroup")
 let correctAudio = document.getElementById("audio")
+let correctStepAudio = document.getElementById("audio2")
 
 let redGuessListener = () =>{isRed() ? guessedRed() : endRound()}
 let blackGuessListener = ()=>{isRed()?  endRound(): guessedBlack()}
@@ -44,6 +45,7 @@ leftButton.addEventListener('click',redGuessListener,false)
 rightButton.addEventListener('click',blackGuessListener,false)
 startGame() 
 correctAudio.volume = 0.2
+correctStepAudio.volume = 0.2
 
 drawNextCardButton.addEventListener('click',() => {drawNextCard()})
 
@@ -72,9 +74,14 @@ function draw(deck){
     mainCardValue = mainCard.split(" ")[0]
     deckLength.innerHTML = `Your deck has ${deck.length} cards left.`
     card.classList.add("drawAnimation")
+    setTimeout(function() {
+        card.style.transition = "all 0.5s ease"
+    }, 1000);
+    
 }
 
 function drawNextCard(){
+    card.style.transition = "none"
     card.style.transform = "none"
     leftButton.disabled = false
     rightButton.disabled = false
@@ -84,13 +91,15 @@ function drawNextCard(){
         case isJackListener: deleteFigureAppendedButtons(); break
     }
     resetButtonListeners()
+
     
     draw(deck)
 }
 
 function resetButtonListeners(){
     drawNextCardButton.style.visibility = 'hidden'
-    guessedSomething(currentLeftLstnr,currentRightLstnr,"Red","Black",redGuessListener,blackGuessListener)   
+    guessedSomething(currentLeftLstnr,currentRightLstnr,"Red","Black",redGuessListener,blackGuessListener)  
+    buttonGroup.classList.remove("btn-group-5","btn-group-4")
 }
 
 function startGame(){
@@ -133,17 +142,19 @@ function guessedSomething(removeLeftLstnr,removeRightLstnr,leftText,rightText,ad
     currentRightLstnr = addRightLstnr
 }
 
-function guessedBlack(){guessedSomething(redGuessListener,blackGuessListener,"Spades","Clubs",isSpadesListener,isClubsListener)}
+function guessedBlack(){guessedSomething(redGuessListener,blackGuessListener,"Spades","Clubs",isSpadesListener,isClubsListener), correctStepAudio.load(),correctStepAudio.play()}
 
-function guessedRed(){guessedSomething(redGuessListener,blackGuessListener,"Hearts","Diamonds",isHeartsListener,isDiamondsListener)}
+function guessedRed(){guessedSomething(redGuessListener,blackGuessListener,"Hearts","Diamonds",isHeartsListener,isDiamondsListener),correctStepAudio.load(),correctStepAudio.play()}
 
-function guessedRedSuit(){guessedSomething(isHeartsListener,isDiamondsListener,"Number","Figures",isNumberListener,isFigureListener)}
+function guessedRedSuit(){guessedSomething(isHeartsListener,isDiamondsListener,"Number","Figures",isNumberListener,isFigureListener),correctStepAudio.load(),correctStepAudio.play()}
 
-function guessedBlackSuit(){guessedSomething(isSpadesListener,isClubsListener,"Number","Figure",isNumberListener,isFigureListener)}
+function guessedBlackSuit(){guessedSomething(isSpadesListener,isClubsListener,"Number","Figure",isNumberListener,isFigureListener),correctStepAudio.load(),correctStepAudio.play()}
 
-function guessedNumber(){guessedSomething(isNumberListener,isFigureListener,"<= 5","> 5",isFiveOrLowerListener,isGreaterThanFiveListener)}
+function guessedNumber(){guessedSomething(isNumberListener,isFigureListener,"<= 5","> 5",isFiveOrLowerListener,isGreaterThanFiveListener),correctStepAudio.load(),correctStepAudio.play()}
 
 function guessedLower(){
+    buttonGroup.classList.add("btn-group-4")
+    correctStepAudio.load(),correctStepAudio.play();
     is2Listener = ()=>{mainCardValue == '2'? guessedLast() : endRound()}
     let is3Listener = ()=>{mainCardValue == '3'? guessedLast() : endRound()}
     let is4Listener = ()=>{mainCardValue == '4'? guessedLast() : endRound()}
@@ -152,8 +163,11 @@ function guessedLower(){
     guessedSomething(isFiveOrLowerListener,isGreaterThanFiveListener,"2","3",is2Listener,is3Listener)
     appendButtonToGroup("4",is4Listener)
     appendButtonToGroup("5",is5Listener)
+   
 }
 function guessedGreater(){
+   
+    correctStepAudio.load(),correctStepAudio.play();
     is6Listener = ()=>{mainCardValue == '6'? guessedLast() : endRound()}
     let is7Listener = ()=>{mainCardValue == '7'? guessedLast() : endRound()}
     let is8Listener = ()=>{mainCardValue == '8'? guessedLast() : endRound()}
@@ -163,9 +177,12 @@ function guessedGreater(){
     appendButtonToGroup("8",is8Listener)
     appendButtonToGroup("9",is9Listener)
     appendButtonToGroup("10",is10Listener)
+    
 }
 
 function guessedFigure(){
+    correctStepAudio.load(),correctStepAudio.play();
+    console.log(buttonGroup.style.left)
     isJackListener = ()=>{mainCardValue == 'Jack'? guessedLast() : endRound()}
     let isQueenListener = ()=>{mainCardValue == 'Queen'? guessedLast() : endRound()}
     let isKingListener = ()=>{mainCardValue == 'King'? guessedLast() : endRound()}
@@ -173,10 +190,12 @@ function guessedFigure(){
     guessedSomething(isNumberListener,isFigureListener,"Jack","Queen",isJackListener,isQueenListener)
     appendButtonToGroup("King", isKingListener)
     appendButtonToGroup("Ace",isAceListener)
+    
 }
 
 function guessedLast(){
     scoreElem.innerHTML = "Score: " + ++score
+    correctAudio.load()
     correctAudio.play()
     endRound()
 

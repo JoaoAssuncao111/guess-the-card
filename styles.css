@@ -26,7 +26,25 @@ https://cazwolf.itch.io/pixel-fantasy-cards card back artist */
     border-radius: 40px;
     text-align: center;
 }
+.endGameText{
+    position: absolute;
+    top: 72%;
+    left: 25%;
+    color: white;
+    font-size: 50px;
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    visibility: hidden; 
+}
 
+.restartButton{
+    width: 15%;
+    height: 5%;
+    border-radius: 10px;
+    position: relative;
+    top: 85%;
+    left: 40%;
+    visibility: hidden;
+}
 .card{
     position: absolute;
     width: 220px;
@@ -141,7 +159,7 @@ https://cazwolf.itch.io/pixel-fantasy-cards card back artist */
     position: relative;
     padding: 10px 60px;
     top: 65%;
-    left: 10%;
+    left: -5%;
     background: #fff;
     border: 0;
     outline: none;

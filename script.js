@@ -1,5 +1,5 @@
 let suits = ['Hearts', 'Diamonds','Clubs','Spades']
-let values = [2,3,4,5,6,7,8,9,10,'Jack','Queen','King','Ace']
+let values = [2/*,3,4,5,6,7,8,9,10,'Jack','Queen','King','Ace'*/]
 let deck = [] 
 let mainCard = ""
 let mainCardSuit = ""
@@ -24,7 +24,9 @@ let buttonGroup = document.getElementById("buttonGroup")
 let correctAudio = document.getElementById("audio")
 let correctStepAudio = document.getElementById("audio2")
 let incorrectAudio = document.getElementById("audio3")
-
+let endGameText = document.getElementById("endGameText")
+let restartButton = document.getElementById("restartButton")
+let deckElem = document.getElementById("deck")
 
 let redGuessListener = () =>{isRed() ? guessedRed() : endRound()}
 let blackGuessListener = ()=>{isRed()?  endRound(): guessedBlack()}
@@ -72,8 +74,9 @@ function shuffle(deck){
 
 function draw(deck){
     isVictory = false
-    if(deck.length == 0) deckFinished()
+
     mainCard = deck.pop()
+    if(deck.length == 0) deckElem.style.visibility = "hidden" 
     console.log(mainCard)
     mainCardSuit = mainCard.split(" ")[2]
     mainCardValue = mainCard.split(" ")[0]
@@ -97,7 +100,6 @@ function drawNextCard(){
     }
     resetButtonListeners()
 
-    
     draw(deck)
 }
 
@@ -125,11 +127,20 @@ function endRound(){
     if(!isVictory){incorrectAudio.load(),incorrectAudio.play()}
     //add card to history and show result (loss)
     for(button of buttonGroup.childNodes){button.disabled = true}
+    if(deck.length == 0) return deckFinished()
     flipCard()
 
 }
 
-function deckFinished(){//End game, thanks for playing
+function deckFinished(){
+    endGameText.style.visibility = "visible"
+    restartButton.style.visibility = "visible"
+    leftButton.disabled = true;
+    rightButton.disabled = true;
+    let frontCard = document.getElementById("frontCard")
+    frontCard.style.content =`url(resources/${mainCardSuit}/${mainCardValue}.png)`
+    card.classList.remove("drawAnimation")
+    card.style.transform = "rotateY(180deg)"
 }
 
 function isNumber(){ return(mainCardValue.length <= 2)}

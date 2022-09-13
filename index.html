@@ -12,6 +12,8 @@
 </head>
 <body class="body">
     <div class="game-screen">
+        <p class="endGameText"id="endGameText">You emptied the deck. Thanks for playing!</p>
+        <button class="restartButton"id="restartButton" onclick=location.reload()>Play Again</button>
         <div class ="historyContainer">
             <div id="score">SCORE: 0</div>
             <div class="diamondContainer"></div>
@@ -38,7 +40,7 @@
         <audio id="audio" src="resources/correct.mp3"></audio>
         <audio id="audio2" src="resources/correct_step.mp3"></audio>
         <audio id="audio3" src="resources/incorrect.mp3"></audio>
-        <div class="deck"></div>
+        <div class="deck"id="deck"></div>
         <div class="cardsLeft" id="deckLength">Your deck has x cards left</div>
         <div class = "card" id="card">
             <div class="back-card"></div>

@@ -5,6 +5,7 @@ let mainCard = ""
 let mainCardSuit = ""
 let mainCardValue = ""
 let score = 0
+let isVictory = false
 
 let scoreElem = document.getElementById("score")
 let tutorialButton = document.getElementById("tutorialButton")
@@ -22,6 +23,8 @@ let deckLength = document.getElementById("deckLength")
 let buttonGroup = document.getElementById("buttonGroup")
 let correctAudio = document.getElementById("audio")
 let correctStepAudio = document.getElementById("audio2")
+let incorrectAudio = document.getElementById("audio3")
+
 
 let redGuessListener = () =>{isRed() ? guessedRed() : endRound()}
 let blackGuessListener = ()=>{isRed()?  endRound(): guessedBlack()}
@@ -45,6 +48,7 @@ leftButton.addEventListener('click',redGuessListener,false)
 rightButton.addEventListener('click',blackGuessListener,false)
 startGame() 
 correctAudio.volume = 0.2
+incorrectAudio.volume = 0.2
 correctStepAudio.volume = 0.2
 
 drawNextCardButton.addEventListener('click',() => {drawNextCard()})
@@ -67,6 +71,7 @@ function shuffle(deck){
 }
 
 function draw(deck){
+    isVictory = false
     if(deck.length == 0) deckFinished()
     mainCard = deck.pop()
     console.log(mainCard)
@@ -117,6 +122,7 @@ function restartGame(){
 }
 
 function endRound(){
+    if(!isVictory){incorrectAudio.load(),incorrectAudio.play()}
     //add card to history and show result (loss)
     for(button of buttonGroup.childNodes){button.disabled = true}
     flipCard()
@@ -194,6 +200,7 @@ function guessedFigure(){
 }
 
 function guessedLast(){
+    isVictory = true
     scoreElem.innerHTML = "Score: " + ++score
     correctAudio.load()
     correctAudio.play()

@@ -6,6 +6,8 @@ let mainCardSuit = ""
 let mainCardValue = ""
 let score = 0
 let isVictory = false
+let guessedCards = []
+let history = []
 
 let scoreElem = document.getElementById("score")
 let tutorialButton = document.getElementById("tutorialButton")
@@ -50,7 +52,7 @@ leftButton.addEventListener('click',redGuessListener,false)
 rightButton.addEventListener('click',blackGuessListener,false)
 startGame() 
 correctAudio.volume = 0.2
-incorrectAudio.volume = 0.2
+incorrectAudio.volume = 0.4
 correctStepAudio.volume = 0.2
 
 drawNextCardButton.addEventListener('click',() => {drawNextCard()})
@@ -74,7 +76,6 @@ function shuffle(deck){
 
 function draw(deck){
     isVictory = false
-
     mainCard = deck.pop()
     if(deck.length == 0) deckElem.style.visibility = "hidden" 
     console.log(mainCard)
@@ -83,8 +84,8 @@ function draw(deck){
     deckLength.innerHTML = `Your deck has ${deck.length} cards left.`
     card.classList.add("drawAnimation")
     setTimeout(function() {
-        card.style.transition = "all 0.5s ease"
-    }, 1000);
+        card.style.transition = "all 0.4s ease"
+    }, 500);
     
 }
 
@@ -124,11 +125,12 @@ function restartGame(){
 }
 
 function endRound(){
+    history.push(mainCard)
     if(!isVictory){incorrectAudio.load(),incorrectAudio.play()}
-    //add card to history and show result (loss)
+    flipCard()
     for(button of buttonGroup.childNodes){button.disabled = true}
     if(deck.length == 0) return deckFinished()
-    flipCard()
+    
 
 }
 
@@ -199,7 +201,6 @@ function guessedGreater(){
 
 function guessedFigure(){
     correctStepAudio.load(),correctStepAudio.play();
-    console.log(buttonGroup.style.left)
     isJackListener = ()=>{mainCardValue == 'Jack'? guessedLast() : endRound()}
     let isQueenListener = ()=>{mainCardValue == 'Queen'? guessedLast() : endRound()}
     let isKingListener = ()=>{mainCardValue == 'King'? guessedLast() : endRound()}
@@ -215,6 +216,7 @@ function guessedLast(){
     scoreElem.innerHTML = "Score: " + ++score
     correctAudio.load()
     correctAudio.play()
+    guessedCards.push(mainCard)
     endRound()
 
 }
@@ -242,7 +244,6 @@ function isHearts(){return(mainCardSuit == 'Hearts')}
 function isSpades(){return(mainCardSuit == 'Spades')}
 
 function flipCard(){
-    
     let frontCard = document.getElementById("frontCard")
     frontCard.style.content =`url(resources/${mainCardSuit}/${mainCardValue}.png)`
     card.classList.remove("drawAnimation")

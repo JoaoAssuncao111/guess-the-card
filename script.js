@@ -165,7 +165,7 @@ function guessedBlack(){guessedSomething(redGuessListener,blackGuessListener,"Sp
 
 function guessedRed(){guessedSomething(redGuessListener,blackGuessListener,"Hearts","Diamonds",isHeartsListener,isDiamondsListener),correctStepAudio.load(),correctStepAudio.play()}
 
-function guessedRedSuit(){guessedSomething(isHeartsListener,isDiamondsListener,"Number","Figures",isNumberListener,isFigureListener),correctStepAudio.load(),correctStepAudio.play()}
+function guessedRedSuit(){guessedSomething(isHeartsListener,isDiamondsListener,"Number","Figure",isNumberListener,isFigureListener),correctStepAudio.load(),correctStepAudio.play()}
 
 function guessedBlackSuit(){guessedSomething(isSpadesListener,isClubsListener,"Number","Figure",isNumberListener,isFigureListener),correctStepAudio.load(),correctStepAudio.play()}
 
